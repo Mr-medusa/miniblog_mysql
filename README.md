@@ -8,11 +8,11 @@
 
 ---
 
-![](preview\blog01.jpg)
+![](https://github.com/Mr-medusa/miniblog_mysql/blob/master/preview/blog01.jpg)
 
 
 
-![](preview\blog02.jpg)
+![](https://github.com/Mr-medusa/miniblog_mysql/blob/master/preview/blog02.jpg)
 
 
 
