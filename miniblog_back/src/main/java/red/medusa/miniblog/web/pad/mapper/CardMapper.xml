@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="red.medusa.miniblog.web.pad.mapper.CardMapper">
+    <select id="findById" parameterType="String" resultType="Card">
+        select * from card where id=#{id}
+    </select>
+    <select id="findAll" resultType="Card">
+        select * from card
+    </select>
+    <insert id="insert" parameterType="Card">
+        insert into card(id,content,updateTime,isChecked,editable)
+        values (#{id},#{content},#{updateTime},#{isChecked},#{editable})
+    </insert>
+    <update id="update" parameterType="Card">
+        update card <trim prefix="set" suffixOverrides=",">
+        <if test="content != null">content=#{content},</if>
+        <if test="updateTime != null">updateTime=#{updateTime},</if>
+        <if test="isChecked != null">isChecked=#{isChecked},</if>
+        <if test="editable != null">editable=#{editable},</if>
+    </trim>
+        where id=#{id}
+    </update>
+    <delete id="deleted" parameterType="String">delete from card where id=#{id}</delete>
+    <delete id="deletedByIds">
+        delete from card where id in
+        <foreach collection="array" item="id" index="index" open="(" close=")" separator=",">#{id}</foreach>
+    </delete>
+</mapper>

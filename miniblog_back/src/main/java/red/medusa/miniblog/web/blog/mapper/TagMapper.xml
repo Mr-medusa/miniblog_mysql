@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="red.medusa.miniblog.web.blog.mapper.TagMapper">
+
+    <insert id="insert" parameterType="red.medusa.miniblog.web.blog.bean.TagBlob">
+        insert into blog_tag(id, tags)
+        values ('blogTags', #{tags});
+    </insert>
+    <update id="update" parameterType="red.medusa.miniblog.web.blog.bean.TagBlob">
+        update blog_tag
+        <trim prefix="set" suffixOverrides=",">
+            <if test="tags != null">tags=#{tags},</if>
+        </trim>
+        where id='blogTags'
+    </update>
+
+    <select id="findBlogTag" resultType="TagBlob">
+        select tags
+        from blog_tag
+        where id = 'blogTags'
+    </select>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="red.medusa.miniblog.web.pad.mapper.PadMapper">
+    <select id="findById" parameterType="String" resultType="pad">
+        select * from pad where id=#{id}
+    </select>
+    <select id="findByParentId" parameterType="String" resultType="pad">
+        select * from pad where parentId=#{parentId}
+    </select>
+    <select id="findAll" resultType="pad">
+        select * from pad order by `order`
+    </select>
+    <sql id="padColumns">
+        id,
+        parentId,
+        name,
+        type,
+        isCard,
+        isShow,
+        isChecked,
+        isStretch,
+        isDefault,
+        createTime,
+        updateTime,
+        `order`
+    </sql>
+    <insert id="insert" parameterType="pad">
+        insert into pad(<include refid="padColumns"/>)
+        values (#{id},#{parentId},#{name},#{type},#{isCard},#{isShow},#{isChecked},#{isStretch},#{isDefault},#{createTime},#{updateTime},#{order});
+    </insert>
+    <update id="update" parameterType="pad">
+        update pad <trim prefix="set" suffixOverrides=",">
+        <if test="parentId != null">parentId=#{parentId},</if>
+        <if test="name != null">name=#{name},</if>
+        <if test="type != null">type=#{type},</if>
+        <if test="isCard != null">isCard=#{isCard},</if>
+        <if test="isShow != null">isShow=#{isShow},</if>
+        <if test="isChecked != null">isChecked=#{isChecked},</if>
+        <if test="isStretch != null">isStretch=#{isStretch},</if>
+        <if test="isDefault != null">isDefault=#{isDefault},</if>
+        <if test="createTime != null">createTime=#{createTime},</if>
+        <if test="updateTime != null">updateTime=#{updateTime},</if>
+        <if test="order != null">`order`=#{order},</if>
+                </trim>
+        where id=#{id}
+    </update>
+    <delete id="delete" parameterType="String">delete from pad where id=#{id}</delete>
+    <delete id="deletedByIds">
+        delete from pad where id in
+        <foreach collection="array" item="id" index="index" open="(" close=")" separator=",">#{id}</foreach>
+    </delete>
+
+</mapper>

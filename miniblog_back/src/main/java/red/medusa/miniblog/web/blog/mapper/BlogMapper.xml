@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="red.medusa.miniblog.web.blog.mapper.BlogMapper">
+    <select id="findById" parameterType="String" resultType="Blog">
+        select * from blog where id=#{id}
+    </select>
+    <sql id="excludeFields">
+        <trim  suffixOverrides=",">
+            <if test="title == null"> b.title, </if>
+            <if test="author == null"> b.author, </if>
+            <if test="blogTags == null"> b.blogTags, </if>
+            <if test="previewContent == null"> b.previewContent, </if>
+            <if test="htmlContent == null"> b.htmlContent, </if>
+            <if test="updateTime == null"> b.updateTime,</if>
+        </trim>
+    </sql>
+    <select id="findAllByFields" parameterType="BlogParam" resultType="Blog">
+        select
+        b.id,
+        <include refid="excludeFields"/>
+        from blog b
+        <where>
+            <if test="id != null">b.id=#{id}</if>
+            <if test="ids != null">
+                b.id in <foreach collection="ids" item="bid" index="index" open="(" close=")" separator=",">#{bid}</foreach>
+            </if>
+        </where>
+        order by updateTime desc
+    </select>
+    <select id="getBlogCatalogByKeyword" parameterType="BlogParam" resultType="Blog">
+        select
+        b.id,
+        <include refid="excludeFields"/>
+        from blog b
+        <where>
+            <if test="keyword != null">
+                b.title like #{keyword} or
+                b.author like #{keyword} or
+                b.blogTags like #{keyword} or
+                b.previewContent like #{keyword} or
+                b.htmlContent like #{keyword}
+            </if>
+        </where>
+        order by updateTime desc
+    </select>
+    <select id="findAll" resultType="Blog">
+        select * from blog order by updateTime desc
+    </select>
+    <insert id="insert" parameterType="Blog">
+        insert into blog(id,title,author,blogTags,previewContent,htmlContent,updateTime)
+        values (#{id},#{title},#{author},#{blogTags},#{previewContent},#{htmlContent},#{updateTime})
+    </insert>
+    <update id="update" parameterType="Blog">
+        update blog
+        <trim prefix="set" suffixOverrides=",">
+            <if test="title != null">title=#{title},</if>
+            <if test="author != null">author=#{author},</if>
+            <if test="blogTags != null">blogTags=#{blogTags},</if>
+            <if test="isShowBanner != null">isShowBanner=#{isShowBanner},</if>
+            <if test="previewContent != null">previewContent=#{previewContent},</if>
+            <if test="htmlContent != null">htmlContent=#{htmlContent},</if>
+            <if test="updateTime != null">updateTime=#{updateTime},</if>
+        </trim>
+        where id=#{id}
+    </update>
+    <delete id="delete" parameterType="String">delete from blog where id=#{id}</delete>
+
+</mapper>
