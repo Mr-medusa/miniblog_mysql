@@ -1,0 +1,7 @@
+/miniblog_back/target
+/miniblog_back/.idea
+/miniblog_front/target
+/miniblog_front/node_modules
+/miniblog_front/dist
+/miniblog_front/.idea
+/miniblog_back/miniblog_back.iml
