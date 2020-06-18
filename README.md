@@ -8,11 +8,10 @@
 
 ---
 
-![Alt text](https://github.com/Mr-medusa/miniblog_mysql/blob/master/preview/blog01.jpg)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0618/224512_df043800_1013340.jpeg "blog01.jpg")
 
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0618/224539_b02152c3_1013340.jpeg "blog02.jpg")
 
-
-![Alt text](https://github.com/Mr-medusa/miniblog_mysql/blob/master/preview/blog02.jpg)
 
 
 
