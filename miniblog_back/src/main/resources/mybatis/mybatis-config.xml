@@ -6,8 +6,6 @@
 
 	<settings>
 		<setting name="jdbcTypeForNull" value="NULL"/>
-		<setting name="lazyLoadingEnabled" value="true"/>
-		<setting name="aggressiveLazyLoading" value="false"/>
 	</settings>
 
 	<databaseIdProvider type="DB_VENDOR">
