@@ -25,8 +25,10 @@
                             <div v-show="card.type !== 'Math'" class="code-mirror-bar-parent">
                                 <div class="code-mirror-bar" :id="'codeMirrorCardEditCodeArea'+card.id"></div>
                             </div>
-                           <!--         quill             -->
-                            <div v-show="card.type==='Math'" :class="{white:myFontColor==='white','read-or-write':!card.editable}" class="quill-content">
+                            <!--         quill             -->
+                            <div v-show="card.type==='Math'"
+                                 :class="{white:myFontColor==='white','read-or-write':!card.editable}"
+                                 class="quill-content">
                                 <div :id="'quillCardEditCodeArea'+card.id"></div>
                             </div>
                         </div>
@@ -91,11 +93,11 @@
             batchSelect: function () {
                 this.checkMe = false;
             },
-            'card.type':function () {
-                if(this.editorType === 'CodeMirror' && !this.typeIsMath()){
+            'card.type': function () {
+                if (this.editorType === 'CodeMirror' && !this.typeIsMath()) {
                     return;
                 }
-                this.$nextTick(()=>{
+                this.$nextTick(() => {
                     this.clearEditDomObj();
                     this.initEditDomObj()
                     // this.editObj.innerHTML='';
@@ -106,7 +108,7 @@
         data() {
             return {
                 background: FrontConfig.imgs[Math.floor(Math.random() * FrontConfig.imgs.length)],
-                myFontColor:null,
+                myFontColor: null,
                 showMoreAct: false,
                 checkMe: false,
                 isEditable: false,
@@ -141,7 +143,7 @@
                         background: Utils.getBackground(this.background) + 'repeat'
                     }
                 } else if (this.background.includes("spot")) {
-                    if(['1','2','4','5','6'].find((e)=> this.background.lastIndexOf(e))){
+                    if (['1', '2', '4', '5', '6'].find((e) => this.background.lastIndexOf(e))) {
                         this.myFontColor = 'white'
                     }
                     return {
@@ -163,13 +165,13 @@
             if (card) {
                 // 注意这里需要设置content
                 this.assignValue(card)
-                this.buildCardEditor(that,card);
+                this.buildCardEditor(that, card);
             } else {
                 PadsService.getCard(this.card.id).then(function (res) {
                     let card = res.data;
                     // 注意这里需要设置content
                     that.assignValue(card)
-                    that.buildCardEditor(that,card);
+                    that.buildCardEditor(that, card);
                     CardCache.putCard({
                         id: that.card.id,
                         content: card.content,
@@ -184,8 +186,8 @@
 
         },
         methods: {
-            buildCardEditor(that,card) {
-                 that.assignValue(card)
+            buildCardEditor(that, card) {
+                that.assignValue(card)
                 if (that.card.content != null || that.card.editable) {
                     that.mallocCardEditor();
                     if (that.card.editable)
@@ -220,17 +222,23 @@
             },
             copyCode() {
                 if (this.cardEditor) {
-                    if (Utils.copyText(this.cardEditor.getValue()))
+                    var text = "";
+                    if (this.typeIsMath()) {
+                        text = this.cardEditor.getText()
+                    } else {
+                        text = this.cardEditor.getValue();
+                    }
+                    if (Utils.copyText(text))
                         EventHub.$emit('goTip', ["复制成功", true, 800]);
                 }
             },
             saveCardContent() {
                 this.isChange = false;
                 let text = "";
-                if(this.typeIsMath()) {
-                     text = this.editObj.innerHTML
-                }else {
-                     text = this.cardEditor.getValue();
+                if (this.typeIsMath()) {
+                    text = this.editObj.innerHTML
+                } else {
+                    text = this.cardEditor.getValue();
                 }
                 let date = Utils.simpleDateFormat(new Date())
                 let card = {
@@ -260,7 +268,7 @@
                 }
                 this.showMoreAct = false;
                 this.isChange = true;
-                this.card.editable=true;
+                this.card.editable = true;
                 this.setReadOrWrite();
             },
             typeIsMath: function () {
@@ -273,24 +281,24 @@
                     this.editObj = document.getElementById("codeMirrorCardEditCodeArea" + this.card.id);
                 }
             },
-            clearEditDomObj(){
+            clearEditDomObj() {
                 let dom;
                 if (this.typeIsMath()) {
                     dom = document.getElementById("codeMirrorCardEditCodeArea" + this.card.id);
                     dom.innerHTML = '';
                 } else {
-                    if(this.editorType === 'Quill'){
-                        dom  = document.getElementById("quillCardEditCodeArea" + this.card.id);
+                    if (this.editorType === 'Quill') {
+                        dom = document.getElementById("quillCardEditCodeArea" + this.card.id);
                         dom.parentNode.removeChild(dom.previousSibling)
                         dom.innerHTML = '';
                     }
                 }
             },
             setCardFocus() {
-                if(this.typeIsMath()){
+                if (this.typeIsMath()) {
                     this.cardEditor.setSelection(this.cardEditor.getLength(), 0);
                     this.cardEditor.focus();
-                }else{
+                } else {
                     // 设置光标到编辑器最后一个字符
                     let lastLine = this.cardEditor.lastLine();
                     let lineHandle = this.cardEditor.getLineHandle(lastLine);
@@ -302,19 +310,19 @@
                     this.cardEditor.focus();
                 }
             },
-            setReadOrWrite(){
-                if(this.card.editable){
-                    if(this.typeIsMath()){
+            setReadOrWrite() {
+                if (this.card.editable) {
+                    if (this.typeIsMath()) {
                         this.cardEditor.enable();
-                    }else{
+                    } else {
                         // this.cardEditor.setOption("readOnly","nocursor");    这样设置不能使用鼠标选中复制了
                         this.cardEditor.setOption("readOnly", false);
                     }
                     this.setCardFocus()
-                }else{
-                    if(this.typeIsMath()){
+                } else {
+                    if (this.typeIsMath()) {
                         this.cardEditor.disable();
-                    }else{
+                    } else {
                         // this.cardEditor.setOption("readOnly","nocursor");    这样设置不能使用鼠标选中复制了
                         this.cardEditor.setOption("readOnly", true);
                     }
@@ -325,7 +333,7 @@
                 if (this.typeIsMath()) {
                     this.cardEditor = Utils.makeQuillEditorForCard(
                         this.editObj,
-                        '#toolbar'+this.card.id,
+                        '#toolbar' + this.card.id,
                         this.card.content,
                         EventHub.getMyType(this.card.type),
                         {
@@ -348,11 +356,11 @@
                 this.setReadOrWrite();
             },
             assignValue(card) {
-                 if(card){
+                if (card) {
                     this.card.editable = card.editable;
                     this.card.updateTime = card.updateTime;
                     this.card.content = card.content;
-                 }
+                }
             },
 
             closeCard(card) {

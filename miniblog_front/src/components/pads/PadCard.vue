@@ -674,6 +674,7 @@
         flex: 1;
         padding-bottom: 30px;
         width: 100%;
+        user-select: text;
     }
     .quill-content .ql-editor{
         display: block;
