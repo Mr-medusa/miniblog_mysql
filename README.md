@@ -4,7 +4,7 @@
 
 + 在Blog编辑器部分加入代码高亮,及KaTeX插件
 + 优化了许多冗余代码和修正排序错乱的Bug
-+ 去除了权限部分,主要想着个人本地使用没必要整什么授权控制了,而且搭建个云服务有点不划算,不过权限这部分可参考[Mongo](https://github.com/Mr-medusa/miniblog_mongo)版
++ 去除了权限部分,不过权限这部分也可参考[Mongo](https://github.com/Mr-medusa/miniblog_mongo)版
 
 ---
 
